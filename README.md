@@ -4,43 +4,47 @@ A full-stack real-time chat application built using the MERN stack (MongoDB, Exp
 
 ## Features
 
--   **Real-time Messaging:** Instant messaging using Socket.io.
--   **User Authentication:** Secure signup and login using JWT (JSON Web Tokens).
--   **File Sharing:** Upload and share images (powered by Cloudinary).
--   **Online Status:** See who is currently online.
--   **Responsive Design:** Modern UI built with Tailwind CSS.
--   **State Management:** robust state management using Redux Toolkit.
+- **Real-time Messaging:** Instant messaging using Socket.io.
+- **User Authentication:** Secure signup and login using JWT (JSON Web Tokens).
+- **File Sharing:** Upload and share images (powered by Cloudinary).
+- **Online Status:** See who is currently online.
+- **Responsive Design:** Modern UI built with Tailwind CSS.
+- **State Management:** robust state management using Redux Toolkit.
 
 ## Tech Stack
 
 ### Client
--   **Framework:** React (Vite)
--   **State Management:** Redux Toolkit
--   **Styling:** Tailwind CSS
--   **Routing:** React Router DOM
--   **HTTP Client:** Axios
--   **Real-time:** Socket.io Client
--   **Icons:** Lucide React, React Icons
+
+- **Framework:** React (Vite)
+- **State Management:** Redux Toolkit
+- **Styling:** Tailwind CSS
+- **Routing:** React Router DOM
+- **HTTP Client:** Axios
+- **Real-time:** Socket.io Client
+- **Icons:** Lucide React, React Icons
 
 ### Server
--   **Runtime:** Node.js
--   **Framework:** Express.js
--   **Database:** MongoDB (Mongoose)
--   **Authentication:** JWT, bcrypt, cookie-parser
--   **Real-time:** Socket.io
--   **File Storage:** Cloudinary
--   **Utilities:** Multer (file handling), dotenv, cors
+
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Database:** MongoDB (Mongoose)
+- **Authentication:** JWT, bcrypt, cookie-parser
+- **Real-time:** Socket.io
+- **File Storage:** Cloudinary
+- **Utilities:** Multer (file handling), dotenv, cors
 
 ## Prerequisites
 
 Before running the application, ensure you have the following installed:
--   [Node.js](https://nodejs.org/) (v14+ recommended)
--   [MongoDB](https://www.mongodb.com/) (Local or Atlas)
--   A [Cloudinary](https://cloudinary.com/) account for image uploads
+
+- [Node.js](https://nodejs.org/) (v14+ recommended)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas)
+- A [Cloudinary](https://cloudinary.com/) account for image uploads
 
 ## Environment Variables
 
 ### Server
+
 Create a `.env` file in the `server` directory with the following variables:
 
 ```env
@@ -58,18 +62,21 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ## Installation & Setup
 
 1.  **Clone the repository:**
+
     ```bash
     git clone <repository-url>
     cd "Real-Time Chap App"
     ```
 
 2.  **Server Setup:**
+
     ```bash
     cd server
     npm install
     # Create .env file as described above
     npm run dev
     ```
+
     The server will start (defaulting to port 5000 if not specified, but recommended 8000).
 
 3.  **Client Setup:**
@@ -90,7 +97,8 @@ Real-Time Chap App/
 │   │   ├── components/     # Reusable UI components
 │   │   ├── pages/          # Application pages
 │   │   ├── redux/          # Redux state slices and store
-│   │   ├── lib/            # Utilities (axios, etc.)
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── assets/         # Assets (images, etc.)
 │   │   └── ...
 │   ├── public/
 │   └── ...
@@ -108,10 +116,12 @@ Real-Time Chap App/
 ## Scripts
 
 ### Client
--   `npm run dev`: Start the development server.
--   `npm run build`: Build the app for production.
--   `npm run lint`: Run ESLint.
--   `npm run preview`: Preview the production build.
+
+- `npm run dev`: Start the development server.
+- `npm run build`: Build the app for production.
+- `npm run lint`: Run ESLint.
+- `npm run preview`: Preview the production build.
 
 ### Server
--   `npm run dev`: Start the backend server with Nodemon.
+
+- `npm run dev`: Start the backend server with Nodemon.

@@ -25,16 +25,22 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-r from-[#e2e2e2] to-[#c9d6ff] p-5 font-sans">
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-950 p-5 font-sans relative overflow-hidden">
+      {/* Abstract Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-[#6F00FF]/10 rounded-full blur-[100px] opacity-40"></div>
+        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] opacity-40"></div>
+      </div>
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
         * { font-family: 'Montserrat', sans-serif; }
       `}</style>
 
       <div
-        className={`relative bg-white rounded-[30px] shadow-2xl overflow-hidden w-full max-w-[850px] min-h-[550px] ${
+        className={`relative bg-slate-900 border border-white/10 rounded-[30px] shadow-2xl overflow-hidden w-full max-w-[850px] min-h-[550px] ${
           isActive ? "active" : ""
-        } group`}
+        } group z-10`}
       >
         {/* SIGN UP FORM PANE */}
         <div
@@ -45,7 +51,7 @@ const AuthPage = () => {
               ? "opacity-100 translate-x-0 md:translate-x-full z-50"
               : "opacity-0 z-0 md:z-10"
           }
-          flex flex-col items-center justify-center px-10 text-center bg-white`}
+          flex flex-col items-center justify-center px-10 text-center bg-slate-900`}
         >
           <SignUpForm />
         </div>
@@ -59,7 +65,7 @@ const AuthPage = () => {
               ? "opacity-0 -translate-x-full md:translate-x-[100%]"
               : "opacity-100 translate-x-0 md:translate-x-0"
           }
-          flex flex-col items-center justify-center px-10 text-center bg-white`}
+          flex flex-col items-center justify-center px-10 text-center bg-slate-900`}
         >
           <SignInForm />
         </div>
@@ -74,7 +80,7 @@ const AuthPage = () => {
           }`}
         >
           <div
-            className={`relative -left-full h-full w-[200%] bg-gradient-to-r from-[#5c36ee] to-[#BF00FF] text-white transform transition-transform duration-700 ease-in-out
+            className={`relative -left-full h-full w-[200%] bg-gradient-to-r from-[#6F00FF] to-indigo-600 text-white transform transition-transform duration-700 ease-in-out
              ${isActive ? "translate-x-1/2" : "translate-x-0"}
           `}
           >
@@ -84,11 +90,11 @@ const AuthPage = () => {
               ${isActive ? "translate-x-0" : "-translate-x-[20%]"}`}
             >
               <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
-              <p className="text-sm leading-6 mb-8">
+              <p className="text-sm leading-6 mb-8 text-slate-200">
                 Enter your personal details to use all of site features
               </p>
               <button
-                className="bg-transparent border border-white w-40 text-white hover:bg-white/20 rounded-lg h-10 font-semibold uppercase text-sm"
+                className="bg-transparent border border-white w-40 text-white hover:bg-white/20 rounded-xl h-10 font-bold uppercase text-sm transition-colors"
                 onClick={() => animateAndNavigate(false, "/signin")}
               >
                 Sign In
@@ -101,11 +107,11 @@ const AuthPage = () => {
               ${isActive ? "translate-x-[20%]" : "translate-x-0"}`}
             >
               <h1 className="text-3xl font-bold mb-4">Hello, Friend!</h1>
-              <p className="text-sm leading-6 mb-8">
+              <p className="text-sm leading-6 mb-8 text-slate-200">
                 Register with your personal details to use all of site features
               </p>
               <button
-                className="bg-transparent border border-white w-40 text-white hover:bg-white/20 rounded-lg h-10 font-semibold uppercase text-sm"
+                className="bg-transparent border border-white w-40 text-white hover:bg-white/20 rounded-xl h-10 font-bold uppercase text-sm transition-colors"
                 onClick={() => animateAndNavigate(true, "/signup")}
               >
                 Sign Up
@@ -121,7 +127,7 @@ const AuthPage = () => {
               const next = !isActive;
               animateAndNavigate(next, next ? "/signup" : "/signin");
             }}
-            className="text-[#BF00FF] text-sm font-bold"
+            className="text-[#6F00FF] hover:text-[#5a00cc] text-sm font-bold transition-colors"
           >
             {isActive
               ? "Already have an account? Sign In"

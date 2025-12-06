@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Lock, User } from "lucide-react";
 import {
-  SocialIcons,
   InputField,
   Button,
 } from "../components/AuthComponents/AuthComponent.jsx";
@@ -45,10 +44,9 @@ const SignInForm = () => {
 
   return (
     <form className="w-full" onSubmit={handleSignIn}>
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">Sign In</h1>
-      <SocialIcons />
-      <span className="text-xs text-gray-500 mt-4 mb-2 inline-block">
-        or use your username password
+      <h1 className="text-3xl font-bold mb-4 text-white">Sign In</h1>
+      <span className="text-xs text-slate-400 mt-4 mb-2 inline-block">
+        Use your username & password
       </span>
       <InputField
         type="text"
@@ -64,8 +62,11 @@ const SignInForm = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      {error && <p className="text-xs text-red-500">{error}</p>}
-      <a href="#" className="text-xs text-gray-700 my-4 hover:underline block">
+      {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
+      <a
+        href="#"
+        className="text-xs text-slate-400 my-4 hover:text-[#6F00FF] transition-colors block"
+      >
         Forgot Your Password?
       </a>
       <div className="mt-4">

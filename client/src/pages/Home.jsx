@@ -6,7 +6,7 @@ import getMessages from "../hooks/getMessages.jsx";
 const Home = () => {
   getMessages();
   return (
-    <div className="w-full h-[100vh] flex overflow-hidden">
+    <div className="w-full h-screen flex overflow-hidden bg-slate-950">
       <SideBar />
       <MessageArea />
     </div>

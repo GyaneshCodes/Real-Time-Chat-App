@@ -1,39 +1,38 @@
-import React from "react";
-import dp from "../../assets/dp.webp";
-import { useRef } from "react";
-import { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import dp from "../../assets/dp.webp";
 
 const SenderMessage = ({ image, message }) => {
   let scroll = useRef();
   let { userData } = useSelector((state) => state.user);
 
   useEffect(() => {
-    scroll.current.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [message, image]);
 
-  const handleImageScroll = () => {
-    scroll.current.scrollIntoView({ behavior: "smooth" });
-  };
   return (
-    <div className="flex items-start gap-[10px]">
-      <div
-        ref={scroll}
-        className="w-fit max-w-[500px] bg-[#4900a8] px-[10px] py-[10px] text-white text-[19px] rounded-tr-none rounded-2xl relative right-0 ml-auto shadow-gray-400 shadow-lg flex flex-col"
-      >
-        {image && (
-          <img
-            src={image}
-            alt=""
-            className="w-[150px] rounded-lg"
-            onLoad={handleImageScroll}
-          />
-        )}
-        {message && <span>{message}</span>}
+    <div className="flex items-end flex-row-reverse gap-3 group animate-fade-in-up">
+      {/* Avatar */}
+      <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10 shrink-0">
+        <img
+          src={userData.image || dp}
+          alt=""
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      <div className="w-[40px] h-[40px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 shadow-lg bg-white cursor-pointer">
-        <img src={userData.image || dp} alt="" className="h-[100%]" />
+      {/* Bubble */}
+      <div ref={scroll} className="flex flex-col items-end w-[45%] lg:w-[30%]">
+        <div className="px-5 py-3 rounded-2xl rounded-tr-sm bg-gradient-to-br from-[#6F00FF] to-indigo-600 text-white shadow-lg shadow-[#6F00FF]/10">
+          {image && (
+            <div className="mb-2 rounded-lg overflow-hidden">
+              <img src={image} alt="" className="max-w-full rounded-lg" />
+            </div>
+          )}
+          {message && (
+            <p className="text-[15px] leading-relaxed font-sans">{message}</p>
+          )}
+        </div>
       </div>
     </div>
   );

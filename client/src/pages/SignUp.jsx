@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Lock, User } from "lucide-react";
 import {
-  SocialIcons,
   InputField,
   Button,
 } from "../components/AuthComponents/AuthComponent.jsx";
@@ -46,10 +45,9 @@ const SignUpForm = () => {
 
   return (
     <form className="w-full" onSubmit={handleSignUp}>
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">Create Account</h1>
-      <SocialIcons />
-      <span className="text-xs text-gray-500 mt-4 mb-2 inline-block">
-        or use your email for registration
+      <h1 className="text-3xl font-bold mb-4 text-white">Create Account</h1>
+      <span className="text-xs text-slate-400 mt-4 mb-2 inline-block">
+        Use your email for registration
       </span>
       <InputField
         type="text"
@@ -72,7 +70,7 @@ const SignUpForm = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
       <div className="mt-4">
         <Button disabled={loading}>{loading ? "Loading..." : "Sign Up"}</Button>
       </div>

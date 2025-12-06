@@ -1,39 +1,41 @@
-import React from "react";
-import dp from "../../assets/dp.webp";
-import { useRef } from "react";
-import { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import dp from "../../assets/dp.webp";
 
 const ReceiverMessage = ({ image, message }) => {
   let scroll = useRef();
   let { selectedUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    scroll.current.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [message, image]);
 
-  const handleImageScroll = () => {
-    scroll.current.scrollIntoView({ behavior: "smooth" });
-  };
   return (
-    <div className="flex items-start gap-[10px]">
-      <div className="w-[40px] h-[40px] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 shadow-lg bg-white cursor-pointer">
-        <img src={selectedUser.image || dp} alt="" className="h-[100%]" />
+    <div className="flex items-end gap-3 group animate-fade-in-up">
+      {/* Avatar */}
+      <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10 shrink-0 bg-slate-800">
+        <img
+          src={selectedUser.image || dp}
+          alt=""
+          className="w-full h-full object-cover"
+        />
       </div>
 
+      {/* Bubble */}
       <div
         ref={scroll}
-        className="w-fit max-w-[500px] bg-[#6F00FF] px-[10px] py-[10px] text-white text-[19px] rounded-tl-none rounded-2xl relative left-0 shadow-gray-400 shadow-lg flex flex-col"
+        className="flex flex-col items-start w-[45%] lg:w-[30%]"
       >
-        {image && (
-          <img
-            src={image}
-            alt=""
-            className="w-[150px] rounded-lg"
-            onLoad={handleImageScroll}
-          />
-        )}
-        {message && <span>{message}</span>}
+        <div className="px-5 py-3 rounded-2xl rounded-tl-sm bg-slate-800 border border-white/5 text-slate-200 shadow-sm">
+          {image && (
+            <div className="mb-2 rounded-lg overflow-hidden bg-slate-900 border border-white/5">
+              <img src={image} alt="" className="max-w-full rounded-lg" />
+            </div>
+          )}
+          {message && (
+            <p className="text-[15px] leading-relaxed font-sans">{message}</p>
+          )}
+        </div>
       </div>
     </div>
   );
