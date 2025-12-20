@@ -16,7 +16,9 @@ import { setMessages } from "../../redux/messageSlice.js";
 const MessageArea = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let { selectedUser, userData, socket } = useSelector((state) => state.user);
+  let { selectedUser, userData, socket, onlineUsers } = useSelector(
+    (state) => state.user
+  );
   let [showPicker, setShowPicker] = useState(false);
   let [input, setInput] = useState("");
   let [frontendImage, setFrontendImage] = useState(null);
@@ -103,7 +105,7 @@ const MessageArea = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => dispatch(setSelectedUser(null))}
-            className="lg:hidden p-2 -ml-2 text-slate-400 hover:text-white transition-colors"
+            className=" p-2 -ml-2 text-slate-400 hover:text-white transition-colors"
           >
             <IoIosArrowRoundBack className="w-8 h-8" />
           </button>
@@ -120,8 +122,14 @@ const MessageArea = () => {
               {selectedUser?.name || "user"}
             </h2>
             <p className="text-slate-500 text-xs flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-              Online
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  onlineUsers?.includes(selectedUser?._id)
+                    ? "bg-green-500"
+                    : "bg-slate-500"
+                } inline-block`}
+              ></span>
+              {onlineUsers?.includes(selectedUser?._id) ? "Online" : "Offline"}
             </p>
           </div>
         </div>

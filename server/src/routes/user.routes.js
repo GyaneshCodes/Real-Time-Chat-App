@@ -4,6 +4,7 @@ import {
   getCurrentUser,
   getOtherUsers,
   search,
+  updatePassword,
 } from "../controllers/user.controllers.js";
 import isAuth from "../middlewares/isAuth.middleware.js";
 import { upload } from "../middlewares/multer.middlewares.js";
@@ -14,5 +15,6 @@ userRouter.get("/current", isAuth, getCurrentUser);
 userRouter.get("/others", isAuth, getOtherUsers);
 userRouter.get("/search", isAuth, search);
 userRouter.put("/profile", isAuth, upload.single("image"), editProfile);
+userRouter.put("/password", isAuth, updatePassword);
 
 export default userRouter;

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import dp from "../assets/dp.webp";
-import { IoCameraOutline } from "react-icons/io5";
+import { IoCameraOutline, IoClose } from "react-icons/io5";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,20 @@ const Profile = () => {
   let [backendImage, setBackendImage] = useState(null);
   let image = useRef();
   let [saving, setSaving] = useState(false);
+
+  // Password Change State
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
+
+  // Notification State
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (type, text) => {
+    setNotification({ type, text });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   const handleImage = (e) => {
     let file = e.target.files[0];
@@ -42,10 +56,44 @@ const Profile = () => {
       });
       setSaving(false);
       dispatch(setUserData(result.data));
-      navigate("/");
+      showNotification("success", "Profile Updated Successfully");
     } catch (error) {
       console.log("Error in profile: ", error);
+      showNotification("error", "Failed to update profile");
       setSaving(false);
+    }
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (!oldPassword || !newPassword) {
+      return showNotification("error", "Both fields are required");
+    }
+    if (newPassword.length < 6) {
+      return showNotification(
+        "error",
+        "New password must be at least 6 characters"
+      );
+    }
+    setPasswordSaving(true);
+    try {
+      await axios.put(
+        `${serverUrl}/api/user/password`,
+        { oldPassword, newPassword },
+        { withCredentials: true }
+      );
+      showNotification("success", "Password Updated Successfully");
+      setOldPassword("");
+      setNewPassword("");
+      setShowPasswordModal(false);
+    } catch (error) {
+      console.error("Error in changing password: ", error);
+      showNotification(
+        "error",
+        error.response?.data?.message || "Failed to update password"
+      );
+    } finally {
+      setPasswordSaving(false);
     }
   };
 
@@ -57,22 +105,94 @@ const Profile = () => {
         <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] opacity-60"></div>
       </div>
 
-      {/* Back Button */}
-      <div className="absolute top-8 left-8 z-10">
+      {/* Notification Toast */}
+      {notification && (
+        <div
+          className={`absolute top-6 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium animate-fade-in ${
+            notification.type === "success" ? "bg-green-600" : "bg-red-600"
+          }`}
+        >
+          {notification.text}
+        </div>
+      )}
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+            <div className="p-6 relative">
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                title="Close"
+              >
+                <IoClose className="w-6 h-6" />
+              </button>
+              <h2 className="text-xl font-bold text-white mb-6 tracking-tight">
+                Change Password
+              </h2>
+              <form
+                className="flex flex-col gap-5"
+                onSubmit={handleChangePassword}
+              >
+                <div className="input-group">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1 mb-2 block">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full h-12 bg-slate-950/50 border border-white/10 rounded-xl px-4 text-white placeholder-slate-600 focus:outline-none focus:border-[#6F00FF] focus:ring-1 focus:ring-[#6F00FF] transition-all duration-300"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1 mb-2 block">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full h-12 bg-slate-950/50 border border-white/10 rounded-xl px-4 text-white placeholder-slate-600 focus:outline-none focus:border-[#6F00FF] focus:ring-1 focus:ring-[#6F00FF] transition-all duration-300"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
+                <div className="mt-2">
+                  <button
+                    className="w-full h-12 rounded-xl bg-[#6F00FF] text-white font-bold tracking-wide hover:bg-indigo-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    disabled={passwordSaving}
+                  >
+                    {passwordSaving ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Updating...</span>
+                      </>
+                    ) : (
+                      "Update Password"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Profile Card - Centered */}
+      <div className="relative w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-10 animate-fade-in-up">
+        {/* Back Button Inside Card */}
         <button
           onClick={() => navigate("/")}
-          className="group flex items-center justify-center w-12 h-12 rounded-full bg-slate-900/50 border border-white/10 hover:bg-[#6F00FF] transition-all duration-300 backdrop-blur-md shadow-lg"
+          className="group absolute top-4 left-4 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-slate-900/50 border border-white/10 hover:bg-[#6F00FF] transition-all duration-300 backdrop-blur-md shadow-lg"
           title="Back to Chat"
         >
-          <IoIosArrowRoundBack className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+          <IoIosArrowRoundBack className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
         </button>
-      </div>
 
-      {/* Main Glassmorphic Card */}
-      <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10 animate-fade-in-up">
         <div className="p-8 flex flex-col items-center">
-          {/* Header */}
-          <h1 className="text-3xl font-bold text-white mb-8 tracking-tight">
+          <h1 className="text-3xl font-bold text-white mt-2 mb-8 tracking-tight">
             Edit Profile
           </h1>
 
@@ -142,9 +262,20 @@ const Profile = () => {
                   value={userData?.email || ""}
                 />
               </div>
+
+              {/* Update Password Trigger */}
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(true)}
+                  className="text-sm font-semibold text-[#6F00FF] hover:text-indigo-400 transition-colors"
+                >
+                  Change Password?
+                </button>
+              </div>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-2">
               <button
                 className="w-full h-12 rounded-xl bg-gradient-to-r from-[#6F00FF] to-indigo-600 text-white font-bold tracking-wide shadow-lg shadow-[#6F00FF]/25 hover:shadow-[#6F00FF]/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 disabled={saving}

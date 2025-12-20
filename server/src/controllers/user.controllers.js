@@ -1,5 +1,6 @@
 import uploadOnCloudinary from "../config/cloudinary.config.js";
 import User from "../models/user.models.js";
+import bcrypt from "bcryptjs";
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -74,5 +75,36 @@ export const search = async (req, res) => {
     return res.status(200).json(users);
   } catch (error) {
     return res.status(500).json({ message: `search users error: ${error}` });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.userId;
+
+    if (!oldPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Both old and new passwords are required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Incorrect old password" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: `Update password error: ${error}` });
   }
 };

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dp from "../../assets/dp.webp";
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { BiLogOutCircle } from "react-icons/bi";
+import { BiLogOutCircle, BiUser } from "react-icons/bi";
 import axios from "axios";
 import { serverUrl } from "../../main.jsx";
 import {
@@ -19,6 +19,8 @@ const SideBar = () => {
     useSelector((state) => state.user);
   let [search, setSearch] = useState(false);
   let [input, setInput] = useState("");
+  let [showDropdown, setShowDropdown] = useState(false);
+  // theme toggle removed
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -67,10 +69,10 @@ const SideBar = () => {
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
             Chatify
           </h1>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative">
             <div
               className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#6F00FF] cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => navigate("/profile")}
+              onClick={() => setShowDropdown(!showDropdown)}
             >
               <img
                 src={userData.image || dp}
@@ -78,6 +80,36 @@ const SideBar = () => {
                 className="w-full h-full object-cover"
               />
             </div>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute top-12 right-0 w-48 bg-slate-900 border border-white/10 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in-up">
+                <div className="p-2 space-y-1">
+                  <button
+                    onClick={() => {
+                      navigate("/profile");
+                      setShowDropdown(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2 text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  >
+                    <BiUser className="w-5 h-5" />
+                    <span className="text-sm font-medium">Profile</span>
+                  </button>
+
+                  <div className="h-px bg-white/10 my-1" />
+                  <button
+                    onClick={() => {
+                      handleLogOut();
+                      setShowDropdown(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2 text-rose-500 hover:bg-white/5 rounded-lg transition-colors"
+                  >
+                    <BiLogOutCircle className="w-5 h-5" />
+                    <span className="text-sm font-medium">Log Out</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -145,17 +177,6 @@ const SideBar = () => {
             ))}
           </div>
         )}
-      </div>
-
-      {/* Footer / Logout */}
-      <div className="p-4 border-t border-white/5 bg-slate-900/80 absolute bottom-0 w-full">
-        <button
-          onClick={handleLogOut}
-          className="flex items-center gap-3 text-slate-400 hover:text-rose-500 transition-colors w-full px-4 py-2 rounded-lg hover:bg-white/5"
-        >
-          <BiLogOutCircle className="w-5 h-5" />
-          <span className="text-sm font-medium">Log Out</span>
-        </button>
       </div>
     </div>
   );
